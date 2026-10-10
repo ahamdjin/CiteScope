@@ -157,3 +157,8 @@ footer a{color:#4264a0}
 .nli-label{font-size:13px;font-weight:750;color:#204a89;margin:9px 0 5px}
 .nli-quote{margin:8px 0;font-size:13px;color:#354b6a;border-left:2px solid #83a2d5;padding-left:12px}
 .nli-caution{font-size:11px;color:#687f9e;margin:8px 0 0}
+
+/* Source attribution remains visible at both desktop and mobile widths. */
+.author-link{color:#d0e0fa;font-size:12px;font-weight:650;text-decoration:none;white-space:nowrap}
+.author-link:hover,.author-link:focus-visible{text-decoration:underline;color:#fff}
+@media(max-width:480px){.nav-right{gap:12px}.author-link{font-size:11px}.privacy-pill{display:none}}
