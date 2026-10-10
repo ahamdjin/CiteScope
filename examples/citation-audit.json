@@ -1,0 +1,16 @@
+{
+  "query": "When did the sample API launch?",
+  "answer": "The API launched in 2024 [1]. The documentation says “Use verified sources” [1]. Its availability is universal [3].",
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://example.org/sample",
+      "text": "The sample API launched in 2024. Use verified sources when reporting results."
+    },
+    {
+      "id": 2,
+      "url": "https://example.org/another",
+      "text": "An independent report."
+    }
+  ]
+}
