@@ -18,11 +18,34 @@ The [browser-based review tool](web/) lets anyone inspect numbered citations, pa
 
 Start locally with `cd web && python -m http.server 8000`, then visit `http://localhost:8000`. A free Hugging Face Static Space can host the same files after deployment.
 
+## Optional local AI evidence assistant
+
+CiteScope now supports an **opt-in Hugging Face natural-language inference (NLI)**
+assistant. It scores source-passage and claim pairs for entailment,
+contradiction and neutral signals. These are suggestions for human review,
+**not independent verification of factual truth**.
+
+    # Free, zero-network dry run
+    python -m citescope.nli examples/benchmark-synthetic.json --output plan.json
+
+    # Optional model download and local CPU inference
+    python -m pip install -e '.[nli]'
+    python -m citescope.nli examples/benchmark-synthetic.json --execute --output suggestions.json
+
+Default model: https://huggingface.co/cross-encoder/nli-deberta-v3-small
+
+The program downloads model weights when explicitly executed. Source text
+stays on your computer and isn't sent to a paid inference API. It can take
+substantial storage/CPU. Real weights have **not yet been tested in CI**.
+See [methodology](docs/citescope/model-assisted-review.md) before interpreting
+the scores as meaningful research findings.
+
 ## What works now
 
 | Capability | What it measures | Maturity |
 |---|---|---|
 | Browser evidence reviewer | Review, split, import, and export human labels | Tested; browser-only |
+| Opt-in local Hugging Face NLI | Claim/passage relation suggestions, not human verdicts | Mock-tested; actual model not CI tested |
 | Citation reference audit | Unresolved source IDs and citation coverage | Tested |
 | Exact quotation audit | Whether cited source text contains quoted excerpts | Tested |
 | Recorded-answer ingestion | Turns archived model outputs into an **unreviewed** claim review queue | Tested |

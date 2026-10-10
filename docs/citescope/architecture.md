@@ -58,3 +58,5 @@ answer + source snapshots -> ingestion -> human labels -> benchmark JSON
 
 A high-quality data release is more valuable than inflating an unsupported
 leaderboard score. The synthetic examples should never be promoted as research.
+
+- `citescope/nli.py`: opt-in local Hugging Face NLI suggestions over candidate cited-source passages, with a no-network dry-run and no automatic truth labeling.
