@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use the CiteScope evaluation extensions, please cite this repository and the original GEO research separately."
+title: "CiteScope: Evidence-First AI Citation Evaluation"
+type: software
+authors:
+  - family-names: "Yar"
+    given-names: "Ahmad"
+repository-code: "https://github.com/ahamdjin/CiteScope"
+license: "Apache-2.0"
+date-released: 2026-10-10
+references:
+  - type: generic
+    title: "GEO: Generative Engine Optimization"
+    url: "https://arxiv.org/abs/2311.09735"
