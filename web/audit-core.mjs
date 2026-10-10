@@ -137,9 +137,11 @@ export function validateReview(audit, reviews, reviewer) {
     if (verdict === "supported" && !evidence.length) {
       throw new Error(unit.id + ": supported claims require an exact evidence excerpt.");
     }
+    const reviewClaim = typeof review.claimText === "string" ? review.claimText.trim() : (unit.claim || unit.text);
+    if (!reviewClaim) throw new Error(unit.id + ": claim text cannot be empty.");
     const claim = {
       id: unit.id,
-      text: unit.claim || unit.text,
+      text: reviewClaim,
       citations: unit.citations.map(Number),
       verdict,
       evidence,

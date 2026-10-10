@@ -29,7 +29,7 @@
     <div class="notice"><strong>What this tool does:</strong> it checks citation structure and literal quotations automatically; <strong>you</strong> decide whether evidence actually supports a claim. Nothing is uploaded or stored by CiteScope.</div>
     <div class="workspace-grid">
       <section class="panel input-panel" aria-labelledby="workspace-title">
-        <div class="panel-heading"><div><span class="step-label">01 / INPUT</span><h2 id="workspace-title">Your research materials</h2><p>Start with the built-in example or paste your own answer and source text.</p></div><button id="demo-btn" class="ghost-button" type="button">Load example</button></div>
+        <div class="panel-heading"><div><span class="step-label">01 / INPUT</span><h2 id="workspace-title">Your research materials</h2><p>Start with the built-in example or paste your own answer and source text.</p></div><div class="top-actions"><button id="import-btn" class="ghost-button" type="button">Import review</button><button id="demo-btn" class="ghost-button" type="button">Load example</button><input id="import-file" type="file" accept=".json,application/json" hidden></div></div>
         <div class="form-grid">
           <label class="field field-full"><span>Research question <em>Required</em></span><textarea id="query" rows="2" placeholder="e.g. Is Zapier hard to learn?"></textarea></label>
           <label class="field field-full"><span>AI-generated answer <em>Required</em></span><textarea id="answer" rows="8" placeholder="Paste the answer with citations like [1] or [1, 2]"></textarea><small>Supports numbered inline citations. Other citation formats are not parsed in this version.</small></label>
@@ -55,7 +55,7 @@
     </div>
 
     <section id="results" class="results hidden" aria-labelledby="results-title">
-      <div class="results-header"><div><span class="step-label">02 / EVIDENCE REVIEW</span><h2 id="results-title">Review each claim</h2><p>Sentence-like units are starting points. Split or rewrite composite claims in exported data before publishing a benchmark.</p></div><span id="result-count" class="results-count"></span></div>
+      <div class="results-header"><div><span class="step-label">02 / EVIDENCE REVIEW</span><h2 id="results-title">Review each claim</h2><p>Sentence-like units are starting points. Edit or split composite statements before labeling; export your review to resume it later.</p></div><span id="result-count" class="results-count"></span></div>
       <div id="alert-list" class="alert-list" aria-live="polite"></div>
       <div id="claim-list" class="claim-list"></div>
       <div class="export-panel">

@@ -67,3 +67,24 @@ test("an unreviewed session never invents support scores",()=>{
   assert.equal(reviewSummary(result.cases[0].runs[0].claims,audit).cited_support_rate,null);
   assert.equal(result.cases[0].runs[0].claims[0].verdict,"unreviewed");
 });
+
+test("reviewed claim text may be edited into an atomic assertion",()=>{
+  const audit=auditAnswer("A has two parts [1].",sources);
+  const claims=validateReview(audit,{c1:{claimText:"A has one part",verdict:"unsupported"}},"analyst");
+  assert.equal(claims[0].text,"A has one part");
+  assert.throws(()=>validateReview(audit,{c1:{claimText:"   "}},"analyst"),/cannot be empty/);
+});
+
+test("can export two atomic claims from one source sentence",()=>{
+  const audit=auditAnswer("Zapier has filters and paths [1].",sources);
+  const units=[
+    {...audit.units[0],id:"c1"},
+    {...audit.units[0],id:"c2"},
+  ];
+  const payload=makeBenchmark(details,{...audit,units},{
+    c1:{claimText:"Zapier supports filters",verdict:"supported",evidenceSourceId:"1",evidenceQuote:"Zapier supports multi-step workflows and paths"},
+    c2:{claimText:"Zapier supports paths",verdict:"unreviewed"}
+  });
+  assert.equal(payload.cases[0].runs[0].claims.length,2);
+  assert.equal(payload.cases[0].runs[0].claims[0].text,"Zapier supports filters");
+});
