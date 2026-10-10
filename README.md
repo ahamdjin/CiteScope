@@ -1,5 +1,7 @@
 # CiteScope
 
+**[Project story and research overview](https://www.ahmadyar.co/work/citescope)** · [Try the free browser app](https://huggingface.co/spaces/ahmadyaar/citescope-evidence-review) · [Browse open-source work](https://www.ahmadyar.co/work/open-source)
+
 Open-source AI citation research and evidence review by [Ahmad Yar](https://www.ahmadyar.co), building on the original [GEO research](https://github.com/GEO-optim/GEO).
 
 **Reproducible evidence intelligence for AI-generated answers.**

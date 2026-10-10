@@ -21,6 +21,7 @@ test("UI is keyboard-aware and labels its export truth limitations",()=>{
   assert.match(html,/id="import-file"/);
   assert.match(html,/id="nli-import-btn"/);
   assert.match(html,/id="nli-import-file"/);
+  assert.match(html,/https:\/\/www\.ahmadyar\.co\/work\/citescope/);
   assert.match(html,/role="status"/);
   assert.match(html,/not independently validated/i);
 });

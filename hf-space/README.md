@@ -11,7 +11,7 @@ license: apache-2.0
 
 # CiteScope Evidence Review
 
-**Created and maintained by [Ahmad Yar](https://www.ahmadyar.co).**
+**Created and maintained by [Ahmad Yar](https://www.ahmadyar.co).** Read the [CiteScope portfolio project story](https://www.ahmadyar.co/work/citescope) for the approach, live demo, source code, and limitations.
 
 A browser-only, privacy-first citation integrity and human evidence review tool.
 
