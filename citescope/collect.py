@@ -156,7 +156,8 @@ def request_answer(*, query: str, sources: list[dict], model: str,
     }
 
 
-def collect(plan: dict, *, model: str, base_url: str, api_key: str,
+def collect(plan: dict, *, model: str, api_key: str,
+            base_url: str = "https://api.openai.com/v1",
             protocol: str = "responses", repeats: int = 1,
             max_calls: int = 12, execute: bool = False,
             transport=urlopen) -> dict:
