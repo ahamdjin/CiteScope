@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'citescope/**'
+      - 'web/**'
       - 'tests/**'
       - 'examples/**'
       - 'docs/citescope/**'
@@ -13,6 +14,7 @@ on:
   pull_request:
     paths:
       - 'citescope/**'
+      - 'web/**'
       - 'tests/**'
       - 'examples/**'
       - 'docs/citescope/**'
@@ -27,6 +29,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -36,9 +41,17 @@ jobs:
         run: |
           python -m compileall -q citescope
           python -m unittest discover -s tests -v
+      - name: Validate browser evidence reviewer
+        run: |
+          node --check web/audit-core.mjs
+          node --check web/app.mjs
+          node --test web/tests/*.test.mjs
       - name: Offline end-to-end benchmark and report
         run: |
           mkdir -p out
+          node web/tests/roundtrip.mjs out/web-reviewed-fixture.json
+          citescope-benchmark out/web-reviewed-fixture.json --output out/web-reviewed-evaluation.json
+          python -m json.tool out/web-reviewed-evaluation.json > /dev/null
           citescope-audit examples/citation-audit.json --output out/citation-audit.json
           citescope-ingest examples/recorded-responses.jsonl --output out/unreviewed-draft.json
           citescope-benchmark examples/benchmark-synthetic.json --baseline baseline --candidate candidate --output out/synthetic-scores.json
