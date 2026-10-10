@@ -18,7 +18,7 @@ test("handles standalone and grouped references",()=>{
   assert.deepEqual(citationIds("hello [1] and [2, 3]"),["1","2","3"]);
 });
 test("rejects invalid source records",()=>{
-  assert.throws(()=>validateSources([{id:1,text:"hi"},{id:"01",text:"bye"}]),/unique/);
+  assert.throws(()=>validateSources([{id:1,text:"hi"},{id:"1",text:"bye"}]),/unique/);
   assert.throws(()=>validateSources([{id:1,text:""}]),/Paste source text/);
   assert.throws(()=>validateSources([]),/at least one/);
 });

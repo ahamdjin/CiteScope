@@ -24,7 +24,7 @@ export function normalize(text) {
 
 export function segmentAnswer(text) {
   return String(text).replace(/\r\n?/g, "\n")
-    .split(/(?<=[.!?])\s+(?=[\p{Lu}\d"“(])|\n+/u)
+    .split(/(?<=[.!?])\s+(?=\S)|\n+/u)
     .map(part => part.trim()).filter(Boolean);
 }
 
@@ -36,7 +36,7 @@ export function validateSources(sources) {
   return sources.map((source, index) => {
     if (!source || typeof source !== "object") throw new Error("Source must be an object.");
     const idValue = String(source.id ?? "").trim();
-    if (!/^[1-9]\d*$/.test(idValue)) {
+    if (!/^\d+$/.test(idValue) || !Number.isSafeInteger(Number(idValue)) || Number(idValue) < 1) {
       throw new Error("Source " + (index + 1) + " needs a positive numeric ID.");
     }
     const id = String(Number(idValue));
