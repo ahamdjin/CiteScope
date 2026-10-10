@@ -36,3 +36,7 @@ Static reports deliberately do not execute or store user queries. Avoid
 publishing private source snapshots or any customer data.
 
 Reference: https://huggingface.co/docs/hub/main/spaces-sdks-static
+
+## Manual publication from GitHub Actions
+
+Create a Hugging Face write token, store it as GitHub Actions secret `HF_TOKEN`, and set GitHub Actions repository variable `HF_SPACE_REPO` to `your-account/citescope-evidence-review`. In GitHub, open **Actions → Publish CiteScope to Hugging Face → Run workflow**. The workflow is manual only and uploads four static browser assets plus the Hugging Face README. Never commit tokens to the repository.

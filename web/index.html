@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="CiteScope Evidence Review: inspect AI citations, check source snapshots, label claims, and export reproducible evidence benchmarks. Private and free.">
+  <meta name="theme-color" content="#0e1e36">
+  <meta name="author" content="Ahmad Yar">
+  <title>CiteScope — Evidence Review Workspace</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="container">
+      <nav aria-label="Primary navigation">
+        <a href="https://github.com/ahamdjin/CiteScope" class="wordmark" aria-label="CiteScope on GitHub">Cite<span>Scope</span><span class="brand-dot">.</span></a>
+        <div class="nav-right"><span class="privacy-pill"><span class="live-dot"></span>Local in your browser</span><a class="github-link" href="https://github.com/ahamdjin/CiteScope" target="_blank" rel="noopener noreferrer">View source <span aria-hidden="true">↗</span></a></div>
+      </nav>
+      <div class="hero">
+        <div class="overline"><span class="hero-line"></span> EVIDENCE INTELLIGENCE / RESEARCH WORKSPACE</div>
+        <h1>Make AI citations<br><em>accountable.</em></h1>
+        <p class="hero-lede">Bring an AI answer and its sources. Find unresolved references, review individual claims, and export a reproducible evidence record.</p>
+        <div class="hero-badges"><span>01 &nbsp; Inspect</span><span>02 &nbsp; Review</span><span>03 &nbsp; Export</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container workspace">
+    <div class="notice"><strong>What this tool does:</strong> it checks citation structure and literal quotations automatically; <strong>you</strong> decide whether evidence actually supports a claim. Nothing is uploaded or stored by CiteScope.</div>
+    <div class="workspace-grid">
+      <section class="panel input-panel" aria-labelledby="workspace-title">
+        <div class="panel-heading"><div><span class="step-label">01 / INPUT</span><h2 id="workspace-title">Your research materials</h2><p>Start with the built-in example or paste your own answer and source text.</p></div><div class="top-actions"><button id="import-btn" class="ghost-button" type="button">Import review</button><button id="demo-btn" class="ghost-button" type="button">Load example</button><input id="import-file" type="file" accept=".json,application/json" hidden></div></div>
+        <div class="form-grid">
+          <label class="field field-full"><span>Research question <em>Required</em></span><textarea id="query" rows="2" placeholder="e.g. Is Zapier hard to learn?"></textarea></label>
+          <label class="field field-full"><span>AI-generated answer <em>Required</em></span><textarea id="answer" rows="8" placeholder="Paste the answer with citations like [1] or [1, 2]"></textarea><small>Supports numbered inline citations. Other citation formats are not parsed in this version.</small></label>
+          <label class="field"><span>Model / system</span><input id="model" type="text" value="Unspecified model" autocomplete="off" placeholder="e.g. assistant-model-version"></label>
+          <label class="field"><span>Research case ID</span><input id="case-id" type="text" value="case-001" autocomplete="off"></label>
+        </div>
+        <div class="divider"></div>
+        <div class="source-header"><div><span class="step-label">SOURCE SNAPSHOTS</span><h3>Sources referenced in the answer</h3><p>Paste the content you want to check against. We don't fetch URLs or send text to a server.</p></div><button id="add-source" class="ghost-button" type="button">+ Add source</button></div>
+        <div id="source-list" class="source-list"></div>
+        <div class="action-row"><button id="analyze-btn" class="primary-button" type="button">Inspect citations <span aria-hidden="true">→</span></button><span class="action-note">No API calls · No account needed</span></div>
+      </section>
+
+      <aside class="side-panel" aria-label="Review status">
+        <div class="side-card"><span class="step-label">QUICK OVERVIEW</span><h2>Evidence, not appearances.</h2><p>CiteScope distinguishes <strong>source existence</strong> from <strong>claim support</strong>. A citation can look convincing and still fail to back the answer.</p>
+        <div class="side-divider"></div>
+        <div class="stat-item"><span>Candidate claim units</span><strong id="stat-claims">—</strong></div>
+        <div class="stat-item"><span>Unresolved source IDs</span><strong id="stat-unknown">—</strong></div>
+        <div class="stat-item"><span>Reference resolvability</span><strong id="stat-resolved">—</strong></div>
+        <div class="stat-item"><span>Reviewed by a human</span><strong id="stat-reviewed">—</strong></div>
+        </div>
+        <div class="sidebar-tip"><span class="tip-icon">i</span><p><strong>A measured claim is not necessarily a true claim.</strong> Machine checks are useful for finding issues, not independently establishing factual support.</p></div>
+      </aside>
+    </div>
+
+    <section id="results" class="results hidden" aria-labelledby="results-title">
+      <div class="results-header"><div><span class="step-label">02 / EVIDENCE REVIEW</span><h2 id="results-title">Review each claim</h2><p>Sentence-like units are starting points. Edit or split composite statements before labeling; export your review to resume it later.</p></div><span id="result-count" class="results-count"></span></div>
+      <div id="alert-list" class="alert-list" aria-live="polite"></div>
+      <div id="claim-list" class="claim-list"></div>
+      <div class="export-panel">
+        <div><span class="step-label">03 / EXPORT</span><h3>Keep your evidence record</h3><p>Download a structured benchmark for Python evaluation, or a readable Markdown report. Human labels are never generated automatically.</p></div>
+        <div class="export-fields"><label class="field"><span>Study name</span><input id="study-name" type="text" value="CiteScope Evidence Review"></label><label class="field"><span>Reviewer ID <em>Required for labels</em></span><input id="reviewer" type="text" placeholder="Your name or pseudonym" autocomplete="off"></label></div>
+        <div class="export-actions"><button id="json-btn" class="primary-button" type="button">Download benchmark JSON ↓</button><button id="md-btn" class="secondary-button" type="button">Download Markdown ↓</button></div>
+        <p class="small-disclaimer">A single-reviewer export is not independently validated research. CiteScope deliberately leaves unchecked claims marked <strong>unreviewed</strong>.</p>
+      </div>
+    </section>
+    <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+  </main>
+  <footer><div class="container footer-inner"><div><strong>CiteScope</strong><span>Created by <a href="https://www.ahmadyar.co" target="_blank" rel="noopener noreferrer">Ahmad Yar</a></span></div><p>Built on GEO research, with original contributors credited. <a href="https://github.com/GEO-optim/GEO" rel="noopener noreferrer" target="_blank">Upstream GEO ↗</a></p></div></footer>
+</body>
+</html>
