@@ -1,0 +1,163 @@
+{
+  "name": "CiteScope Synthetic Model Comparison",
+  "sample_type": "synthetic_demo_not_research",
+  "label_provenance": "Synthetic reviewer labels invented solely to demonstrate scoring. Not real model outputs or research data.",
+  "cases": [
+    {
+      "id": "synthetic-routing",
+      "query": "When does lead routing begin?",
+      "sources": [
+        {
+          "id": 1,
+          "url": "https://example.org/routing",
+          "text": "A lead routing workflow begins when a new form submission is received. The workflow selects an owner based on business rules."
+        }
+      ],
+      "runs": [
+        {
+          "model": "baseline",
+          "run_id": "b-r1",
+          "answer": "Lead routing begins when a new form is submitted [1].",
+          "claims": [
+            {
+              "id": "c1",
+              "text": "Lead routing begins with a form submission",
+              "citations": [
+                1
+              ],
+              "verdict": "supported",
+              "reviewer": "synthetic-demo",
+              "evidence": [
+                {
+                  "source_id": 1,
+                  "quote": "begins when a new form submission is received"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "model": "candidate",
+          "run_id": "c-r1",
+          "answer": "Lead routing starts whenever a record is deleted [1].",
+          "claims": [
+            {
+              "id": "c1",
+              "text": "Routing begins when a record is deleted",
+              "citations": [
+                1
+              ],
+              "verdict": "contradicted",
+              "reviewer": "synthetic-demo",
+              "evidence": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-sources",
+      "query": "Does a cited source always support a generated claim?",
+      "sources": [
+        {
+          "id": 1,
+          "url": "https://example.org/citations",
+          "text": "A cited source can be irrelevant. The presence of a source reference does not establish that it supports the claim."
+        }
+      ],
+      "runs": [
+        {
+          "model": "baseline",
+          "run_id": "b-r1",
+          "answer": "Every citation guarantees claim accuracy [1].",
+          "claims": [
+            {
+              "id": "c1",
+              "text": "A citation guarantees accuracy",
+              "citations": [
+                1
+              ],
+              "verdict": "contradicted",
+              "reviewer": "synthetic-demo",
+              "evidence": []
+            }
+          ]
+        },
+        {
+          "model": "candidate",
+          "run_id": "c-r1",
+          "answer": "The presence of a source reference does not establish support [1].",
+          "claims": [
+            {
+              "id": "c1",
+              "text": "Citation alone does not establish support",
+              "citations": [
+                1
+              ],
+              "verdict": "supported",
+              "reviewer": "synthetic-demo",
+              "evidence": [
+                {
+                  "source_id": 1,
+                  "quote": "does not establish that it supports the claim"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-api",
+      "query": "Is provider-side verification useful after an API call?",
+      "sources": [
+        {
+          "id": 1,
+          "url": "https://example.org/api",
+          "text": "After a write API request, read the new record from the provider and compare important fields before marking it verified."
+        }
+      ],
+      "runs": [
+        {
+          "model": "baseline",
+          "run_id": "b-r1",
+          "answer": "You can check the record directly with the provider [1].",
+          "claims": [
+            {
+              "id": "c1",
+              "text": "The provider record can be read to verify the write",
+              "citations": [
+                1
+              ],
+              "verdict": "supported",
+              "reviewer": "synthetic-demo",
+              "evidence": [
+                {
+                  "source_id": 1,
+                  "quote": "read the new record from the provider"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "model": "candidate",
+          "run_id": "c-r1",
+          "answer": "A write response is final, and provider-side checking is never necessary [1].",
+          "claims": [
+            {
+              "id": "c1",
+              "text": "Checking is never necessary",
+              "citations": [
+                1
+              ],
+              "verdict": "contradicted",
+              "reviewer": "synthetic-demo",
+              "evidence": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
