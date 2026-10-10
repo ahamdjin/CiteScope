@@ -142,3 +142,11 @@ footer a{color:#4264a0}
   .export-panel{padding:19px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.top-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.claim-identity{display:flex;align-items:center;gap:11px}
+.split-button{background:none;border:1px solid #cedaf0;border-radius:5px;padding:2px 7px;font-size:11px;color:#496db4}
+.split-button:hover{background:#eef4ff}
+.review-grid .field:has(.claim-edit){grid-column:1/-1}
+.atomic-edit{min-height:60px}
+@media(max-width:700px){.top-actions{width:100%}.top-actions>.ghost-button{flex:1}}

@@ -21,13 +21,15 @@ what a structurally valid, but factually misleading, citation looks like.
 2. Add each cited source's *actual text snapshot* plus its optional URL.
 3. Inspect for missing reference IDs, uncited candidate sentences and exact
    quotation mismatches.
-4. Review each candidate claim yourself; select one of supported, partially
+4. Edit or split composite sentence candidates into atomic claims.
+5. Review each candidate claim yourself; select one of supported, partially
    supported, unsupported, contradicted or unreviewed.
-5. For *supported* claims, paste a literal excerpt that appears in the cited
+6. For *supported* claims, paste a literal excerpt that appears in the cited
    source. Other labels may also carry an evidence excerpt.
-6. Export a structured \`citescope-benchmark-v1\`-compatible JSON dataset or a
+7. Export a structured \`citescope-benchmark-v1\`-compatible JSON dataset or a
    Markdown research report.
-7. Run the exported JSON through the Python evaluator:
+8. Import an earlier exported JSON review to resume work.
+9. Run the exported JSON through the Python evaluator:
 
 \`\`\`bash
 python -m citescope.benchmark citescope-case-001.json --output result.json

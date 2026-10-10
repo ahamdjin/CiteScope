@@ -12,10 +12,17 @@ inspectable and honest about uncertainty—not to promise better rankings.
 > GEO work provided a research foundation; these evaluation tools are CiteScope's
 > own, separately developed extensions.
 
+## Interactive Evidence Review workspace
+
+The [browser-based review tool](web/) lets anyone inspect numbered citations, paste source snapshots, edit or split atomic claims, add human evidence verdicts, and export or resume a benchmark review. It requires no server-side model, account or API key.
+
+Start locally with `cd web && python -m http.server 8000`, then visit `http://localhost:8000`. A free Hugging Face Static Space can host the same files after deployment.
+
 ## What works now
 
 | Capability | What it measures | Maturity |
 |---|---|---|
+| Browser evidence reviewer | Review, split, import, and export human labels | Tested; browser-only |
 | Citation reference audit | Unresolved source IDs and citation coverage | Tested |
 | Exact quotation audit | Whether cited source text contains quoted excerpts | Tested |
 | Recorded-answer ingestion | Turns archived model outputs into an **unreviewed** claim review queue | Tested |
