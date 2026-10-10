@@ -1,0 +1,60 @@
+name: CiteScope Evaluation CI
+on:
+  push:
+    paths:
+      - 'citescope/**'
+      - 'tests/**'
+      - 'examples/**'
+      - 'docs/citescope/**'
+      - 'README.md'
+      - 'CITESCOPE.md'
+      - 'pyproject.toml'
+      - '.github/workflows/citescope-tests.yml'
+  pull_request:
+    paths:
+      - 'citescope/**'
+      - 'tests/**'
+      - 'examples/**'
+      - 'docs/citescope/**'
+      - 'README.md'
+      - 'CITESCOPE.md'
+      - 'pyproject.toml'
+      - '.github/workflows/citescope-tests.yml'
+permissions:
+  contents: read
+jobs:
+  unit-and-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CiteScope
+        run: python -m pip install -e .
+      - name: Compile and unit-test
+        run: |
+          python -m compileall -q citescope
+          python -m unittest discover -s tests -v
+      - name: Offline end-to-end benchmark and report
+        run: |
+          mkdir -p out
+          citescope-audit examples/citation-audit.json --output out/citation-audit.json
+          citescope-ingest examples/recorded-responses.jsonl --output out/unreviewed-draft.json
+          citescope-benchmark examples/benchmark-synthetic.json --baseline baseline --candidate candidate --output out/synthetic-scores.json
+          citescope-report out/synthetic-scores.json --output out/synthetic-report.html
+          citescope-geo examples/geo-experiment-synthetic.json --control control --candidate evidence-first --output out/synthetic-geo.json
+          citescope-collect examples/geo-experiment-plan.json --model demo-only --output out/dry-run.json --max-calls 12
+          python -m json.tool out/citation-audit.json > /dev/null
+          python -m json.tool out/unreviewed-draft.json > /dev/null
+          python -m json.tool out/synthetic-scores.json > /dev/null
+          python -m json.tool out/synthetic-geo.json > /dev/null
+          python -m json.tool out/dry-run.json > /dev/null
+          grep -q '"dry_run": true' out/dry-run.json
+          test -s out/synthetic-report.html
+          grep -q 'Demonstration data only' out/synthetic-report.html
+      - name: Upload self-contained HTML demo and reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: citescope-synthetic-demo
+          path: out/

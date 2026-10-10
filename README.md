@@ -1,72 +1,142 @@
-# GEO: Generative Engine Optimization
+# CiteScope
 
-<div class="badge-container">
-    <a href="https://generative-engines.com/GEO/" class="badge">
-        <img src="https://img.shields.io/website?down_message=down&style=for-the-badge&up_message=up&url=https%3A%2F%2Fgenerative-engines.com/" alt="Website">
-    </a>
-    <a href="https://huggingface.co/datasets/GEO-optim/geo-bench" class="badge">
-        <img src="https://img.shields.io/badge/Dataset-GEO-%2DBENCH-orange?style=for-the-badge" alt="Dataset">
-    </a>
-    <a href="https://arxiv.org/abs/2311.09735" class="badge">
-        <img src="https://img.shields.io/badge/arXiv-2311.09735-red.svg?style=for-the-badge" alt="Arxiv Paper">
-    </a>
-    <a href="https://huggingface.co/spaces/GEO-optim/geo-bench" class="badge">
-        <img src="https://img.shields.io/badge/Leaderboard-GEO-%2DBENCH-green?style=for-the-badge" alt="Code">
-    </a>
-</div>
+**Reproducible evidence intelligence for AI-generated answers.**
 
-## TLDR
+CiteScope is an open-source Python toolkit for auditing numbered AI citations,
+reviewing claim-level support against source snapshots, and comparing systems
+on a versioned benchmark. Its goal is to make AI search evaluation transparent,
+inspectable and honest about uncertainty—not to promise better rankings.
 
-**GEO** introduces optimization techniques to boost website visibility in generative engine responses.
+> **What makes CiteScope different?** It connects source provenance → claim-level
+> human labels → model comparisons → reproducible, offline reports. The original
+> GEO work provided a research foundation; these evaluation tools are CiteScope's
+> own, separately developed extensions.
 
-## Abstract
-> The advent of large language models (LLMs) has ushered in a new paradigm of search engines that use generative models to gather and summarize information to answer user queries. These Generative Engines are reshaping search engines, promising personalized and precise responses to user queries. Yet, content creators grapple with a lack of control over how their content appears in these engines. Enter GENERATIVE ENGINE OPTIMIZATION (GEO), a solution that empowers content creators with a set of optimization strategies to enhance their online visibility. To evaluate GEO, we introduce GEO-BENCH, a collection of diverse user queries from different sources, each tagged with relevant categories and corresponding search resutls. Our experiments reveal that GEO can boost source visibility by up to 40%, offering practical insights for content creators. GEO heralds a new era in information discovery systems, promising profound implications for both search engine developers and content creators
->
+## What works now
 
-![GEO-Teaser](docs/GEO/static/images/geo_teaser.png)
+| Capability | What it measures | Maturity |
+|---|---|---|
+| Citation reference audit | Unresolved source IDs and citation coverage | Tested |
+| Exact quotation audit | Whether cited source text contains quoted excerpts | Tested |
+| Recorded-answer ingestion | Turns archived model outputs into an **unreviewed** claim review queue | Tested |
+| Claim-level rubric | Explicit supported / partial / unsupported / contradicted / unreviewed labels | Tested; labels supplied by reviewers |
+| Evidence integrity | Rejects labeled-support excerpts missing from the cited source snapshot | Tested; **not** semantic entailment |
+| Case-balanced comparisons | Paired bootstrap intervals across shared questions | Tested on synthetic examples |
+| Offline HTML reports | Responsive, inspectable output with source-level evidence | Tested; no trackers or paid API |
+| Modern model collection | Optional OpenAI-compatible Responses/Chat APIs, source-controlled GEO experiments | Implemented; live provider not yet tested |
+| Independently reviewed research benchmark | Gold labels and published results | Planned |
+| Hugging Face Space | Published demo and dataset | Planned; static demo export is ready |
 
+## Quick start — no API keys
 
-## Installation
+Python 3.10+ is required. No dependencies are required for the CiteScope
+citation evaluation package.
 
-1. Create a conda environment: conda create -n geo python=3.9
-2. conda activate geo
-3. pip install -r requirements.txt
+```bash
+# First, install the package from your CiteScope checkout
+python -m pip install -e .
 
+# 1. Check a single AI answer against provided source text
+python -m citescope examples/citation-audit.json --output citation-report.json
 
+# 2. Turn recorded outputs into unreviewed cases for human labeling
+python -m citescope.ingest examples/recorded-responses.jsonl --output draft-benchmark.json
 
-## Run GEO
+# 3. Evaluate explicitly labeled claims (SYNTHETIC demo only)
+python -m citescope.benchmark examples/benchmark-synthetic.json \
+  --baseline baseline --candidate candidate --output synthetic-results.json
 
-To replicate results in paper, simply run:
-```python
-cd src
-python run_geo.py
+# 4. Produce a standalone interactive-by-disclosure HTML report
+python -m citescope.report synthetic-results.json --output report.html
+
+# 5. Compare original and revised source variants using saved example answers
+python -m citescope.geo_experiment examples/geo-experiment-synthetic.json \
+  --control control --candidate evidence-first --output synthetic-geo.json
+
+# 6. Preview an actual model collection experiment WITHOUT network access
+python -m citescope.collect examples/geo-experiment-plan.json \
+  --model YOUR_MODEL_IDENTIFIER --max-calls 12
+
+# 7. Test the code
+python -m unittest discover -s tests -v
 ```
 
-## Define new GEO functions
+Open `report.html` locally. To share it, upload it as a static web page **only
+if the underlying dataset and its license permit redistribution**.
 
-You can define custom GEO functions in `src/geo_functions.py`. Reference them in `src/run_geo.py` in `GEO_METHODS` variable, to evaluate on your new custom GEO function. 
+## Running a controlled modern-model experiment
 
-## GEO-BENCH
+`citescope.collect` accepts a controlled source-variant plan and can collect
+responses using an OpenAI-compatible **Responses** or **Chat Completions** API.
+By default it performs a safe dry run. Actual provider calls require all of:
+`--execute`, a configured `CITESCOPE_API_KEY`, and a defined maximum call
+budget. **Live API calls may incur charges and have not been exercised here.**
 
-GEO-bench is hosted on huggingface, can be downloaded using:
-```python
-from datasets import load_dataset
-load_dataset('GEO-optim/geo-bench')
-``` 
-
-## Leaderboard
-
-Leaderboard is available at: [https://huggingface.co/spaces/Pranjal2041/GEO-bench](leaderboard)
-
-## Citation
-
+```bash
+export CITESCOPE_API_KEY="your_api_key"   # do not commit credentials
+python -m citescope.collect examples/geo-experiment-plan.json \
+  --model YOUR_MODEL_IDENTIFIER --protocol responses \
+  --repeats 2 --max-calls 12 --execute --output collected.json
+python -m citescope.geo_experiment collected.json \
+  --control control --candidate evidence-first --output comparison.json
 ```
-@misc{aggarwal2023geo,
-      title={GEO: Generative Engine Optimization}, 
-      author={Pranjal Aggarwal and Vishvak Murahari and Tanmay Rajpurohit and Ashwin Kalyan and Karthik R Narasimhan and Ameet Deshpande},
-      year={2023},
-      eprint={2311.09735},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
-}
+
+This measures a controlled **citation-share proxy**, not how ChatGPT,
+Gemini or another live search system ranks websites. Changing source text is
+not the same as controlling source retrieval, ranking, or citations in search.
+
+## Typical research pipeline
+
+```text
+Versioned source snapshots + user questions
+                 │
+Saved AI outputs from named models/runs
+                 │
+CiteScope recorded-answer ingestion
+                 │
+Human review: atomic claims, citations, evidence snippets, verdicts
+                 │
+Deterministic scoring and failure taxonomy
+                 │
+Case-balanced comparisons / confidence intervals
+                 │
+Self-contained reproducible HTML report
 ```
+
+### What CiteScope cannot yet claim
+
+A source ID that exists is **not** evidence that a citation is relevant.
+A quotation matching source text is **not** proof that the source supports an
+entire claim. Automated claim extraction currently provides annotation
+candidates, not verified atomic claims. Comparative results from the bundled
+synthetic examples are **not** real research results or model rankings.
+
+The meaning of each label and recommended review procedure is in
+[Research protocol](docs/citescope/research-protocol.md).
+
+## Original GEO research and license
+
+CiteScope incorporates the complete source of
+[GEO: Generative Engine Optimization](https://github.com/GEO-optim/GEO)
+at revision `c9e985f2bc4b539a01e8e9d226ff2a3d8d29a888`, preserving its
+[Apache 2.0 license](LICENSE), original code under `src/`, data and assets.
+The original root README is preserved unchanged as
+[UPSTREAM_README.md](UPSTREAM_README.md), and the upstream SHA is recorded in
+[UPSTREAM_SOURCE.txt](UPSTREAM_SOURCE.txt).
+
+The original GEO research is by Pranjal Aggarwal, Vishvak Murahari, Tanmay
+Rajpurohit, Ashwin Kalyan, Karthik R. Narasimhan and Ameet Deshpande. Its
+paper is [GEO: Generative Engine Optimization](https://arxiv.org/abs/2311.09735).
+Their historical experiments include rewriting techniques we **do not use** in
+CiteScope's evaluator (for instance, generating unsupported quotes or numbers).
+The repository retains the original experiments for attribution and historical
+reproducibility, but CiteScope's own tools do not rely on them.
+
+## Contributing
+
+See [research protocol](docs/citescope/research-protocol.md) and
+[project architecture](docs/citescope/architecture.md). Include test cases and
+explicit limitations with proposed new evaluation metrics. No fabricated
+citations, rankings, dates, or benchmark improvements are acceptable.
+
+**Maintained in the [CiteScope repository](https://github.com/ahamdjin/CiteScope).**

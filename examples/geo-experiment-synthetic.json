@@ -1,0 +1,98 @@
+{
+  "name": "CiteScope Synthetic GEO Experiment",
+  "sample_type": "synthetic_demo_not_research",
+  "cases": [
+    {
+      "id": "seo-q1",
+      "query": "Is it hard to learn automation?",
+      "model": "fictional-demo-engine",
+      "target_source_id": 1,
+      "variants": [
+        {
+          "id": "control",
+          "sources": [
+            {
+              "id": 1,
+              "text": "Automation tools connect web apps."
+            },
+            {
+              "id": 2,
+              "text": "An unrelated reference about software testing."
+            }
+          ],
+          "runs": [
+            {
+              "run_id": "demo1",
+              "answer": "Automation tools connect apps [1]. Software tests are useful [2]."
+            }
+          ]
+        },
+        {
+          "id": "evidence-first",
+          "sources": [
+            {
+              "id": 1,
+              "text": "Automation tools connect web apps. Beginners often start with triggers and actions, then learn JSON, debugging and API authentication."
+            },
+            {
+              "id": 2,
+              "text": "An unrelated reference about software testing."
+            }
+          ],
+          "runs": [
+            {
+              "run_id": "demo1",
+              "answer": "New users learn triggers and actions before JSON [1]. API authentication comes later [1]."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "seo-q2",
+      "query": "Why can a workflow fail?",
+      "model": "fictional-demo-engine",
+      "target_source_id": 1,
+      "variants": [
+        {
+          "id": "control",
+          "sources": [
+            {
+              "id": 1,
+              "text": "Workflows can fail during API requests."
+            },
+            {
+              "id": 2,
+              "text": "A separate unchanged source about retries."
+            }
+          ],
+          "runs": [
+            {
+              "run_id": "demo1",
+              "answer": "Retries can help recover from some failures [2]."
+            }
+          ]
+        },
+        {
+          "id": "evidence-first",
+          "sources": [
+            {
+              "id": 1,
+              "text": "Workflows can fail from expired credentials, API errors, malformed data and missing keys. Retry logic should avoid duplicates."
+            },
+            {
+              "id": 2,
+              "text": "A separate unchanged source about retries."
+            }
+          ],
+          "runs": [
+            {
+              "run_id": "demo1",
+              "answer": "Credentials and malformed data may break workflows [1]. Retry logic should prevent duplicates [1]."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

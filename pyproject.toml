@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "citescope-research"
+version = "0.3.0"
+description = "Evidence-first, reproducible citation auditing and model benchmarking"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [{name = "Ahmad Yar"}]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/ahamdjin/CiteScope"
+Upstream = "https://github.com/GEO-optim/GEO"
+
+[project.scripts]
+citescope-audit = "citescope.audit:main"
+citescope-ingest = "citescope.ingest:main"
+citescope-benchmark = "citescope.benchmark:main"
+citescope-report = "citescope.report:main"
+citescope-geo = "citescope.geo_experiment:main"
+citescope-collect = "citescope.collect:main"
+
+[tool.setuptools]
+packages = ["citescope"]
