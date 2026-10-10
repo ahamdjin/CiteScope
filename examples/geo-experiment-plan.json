@@ -1,0 +1,38 @@
+{
+  "name": "CiteScope Controlled GEO Source Experiment — Demo Plan",
+  "cases": [
+    {
+      "id": "automation-learning",
+      "query": "What makes automation workflows difficult for beginners?",
+      "target_source_id": 1,
+      "variants": [
+        {
+          "id": "control",
+          "sources": [
+            {
+              "id": 1,
+              "text": "Automation workflows connect triggers to actions. They can include conditions and retries."
+            },
+            {
+              "id": 2,
+              "text": "A separate technical reference about JSON and API requests."
+            }
+          ]
+        },
+        {
+          "id": "evidence-first",
+          "sources": [
+            {
+              "id": 1,
+              "text": "Automation workflows connect triggers, data and rules to outcomes. Beginners often struggle with JSON, API authentication, field mapping, errors and retry behavior. A basic form-to-CRM automation may not require custom code."
+            },
+            {
+              "id": 2,
+              "text": "A separate technical reference about JSON and API requests."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
