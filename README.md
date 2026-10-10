@@ -23,9 +23,9 @@ inspectable and honest about uncertainty—not to promise better rankings.
 | Evidence integrity | Rejects labeled-support excerpts missing from the cited source snapshot | Tested; **not** semantic entailment |
 | Case-balanced comparisons | Paired bootstrap intervals across shared questions | Tested on synthetic examples |
 | Offline HTML reports | Responsive, inspectable output with source-level evidence | Tested; no trackers or paid API |
-| Live AI model connectors | Hosted model calls and collection | Planned |
+| Modern model collection | Optional OpenAI-compatible Responses/Chat APIs, source-controlled GEO experiments | Implemented; live provider not yet tested |
 | Independently reviewed research benchmark | Gold labels and published results | Planned |
-| Hugging Face Space | Published demo and dataset | Planned |
+| Hugging Face Space | Published demo and dataset | Planned; static demo export is ready |
 
 ## Quick start — no API keys
 
@@ -49,12 +49,41 @@ python -m citescope.benchmark examples/benchmark-synthetic.json \
 # 4. Produce a standalone interactive-by-disclosure HTML report
 python -m citescope.report synthetic-results.json --output report.html
 
-# 5. Test the code
+# 5. Compare original and revised source variants using saved example answers
+python -m citescope.geo_experiment examples/geo-experiment-synthetic.json \
+  --control control --candidate evidence-first --output synthetic-geo.json
+
+# 6. Preview an actual model collection experiment WITHOUT network access
+python -m citescope.collect examples/geo-experiment-plan.json \
+  --model YOUR_MODEL_IDENTIFIER --max-calls 12
+
+# 7. Test the code
 python -m unittest discover -s tests -v
 ```
 
 Open `report.html` locally. To share it, upload it as a static web page **only
 if the underlying dataset and its license permit redistribution**.
+
+## Running a controlled modern-model experiment
+
+`citescope.collect` accepts a controlled source-variant plan and can collect
+responses using an OpenAI-compatible **Responses** or **Chat Completions** API.
+By default it performs a safe dry run. Actual provider calls require all of:
+`--execute`, a configured `CITESCOPE_API_KEY`, and a defined maximum call
+budget. **Live API calls may incur charges and have not been exercised here.**
+
+```bash
+export CITESCOPE_API_KEY="your_api_key"   # do not commit credentials
+python -m citescope.collect examples/geo-experiment-plan.json \
+  --model YOUR_MODEL_IDENTIFIER --protocol responses \
+  --repeats 2 --max-calls 12 --execute --output collected.json
+python -m citescope.geo_experiment collected.json \
+  --control control --candidate evidence-first --output comparison.json
+```
+
+This measures a controlled **citation-share proxy**, not how ChatGPT,
+Gemini or another live search system ranks websites. Changing source text is
+not the same as controlling source retrieval, ranking, or citations in search.
 
 ## Typical research pipeline
 

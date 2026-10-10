@@ -23,6 +23,10 @@ them. They are available only to reproduce the original research.
 - `citescope/benchmark.py`: evaluate reviewed atomic claims, validate evidence
   excerpts, group cases, run deterministic paired bootstrap comparisons
 - `citescope/report.py`: generate self-contained, HTML-escaped dashboards
+- `citescope/geo_experiment.py`: compare source rewrite variants under fixed,
+  matching third-party source snapshots, with bootstrapped differences
+- `citescope/collect.py`: opt-in, call-bounded Responses / Chat Completions
+  model collection with dry-run as the default
 - `tests/`: offline unit and end-to-end test suite
 - `examples/`: **synthetic** demos and JSONL record templates, not findings
 
@@ -44,7 +48,8 @@ answer + source snapshots -> ingestion -> human labels -> benchmark JSON
 ## Gaps before a publishable benchmark
 
 1. Independent two-reviewer collection and adjudication provenance.
-2. Real model outputs from repeatable, documented runs with model versions.
+2. Actually run model collection on versioned experimental questions and archive outputs.
+   The collector is implemented but provider APIs have not yet been exercised.
 3. Representative question sampling, balanced categories and prompt controls.
 4. Model-assisted entailment evaluation calibrated on independently reviewed
    source/claim examples—not treated as a ground truth itself.

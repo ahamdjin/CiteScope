@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "citescope-research"
-version = "0.2.0"
+version = "0.3.0"
 description = "Evidence-first, reproducible citation auditing and model benchmarking"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -28,6 +28,8 @@ citescope-audit = "citescope.audit:main"
 citescope-ingest = "citescope.ingest:main"
 citescope-benchmark = "citescope.benchmark:main"
 citescope-report = "citescope.report:main"
+citescope-geo = "citescope.geo_experiment:main"
+citescope-collect = "citescope.collect:main"
 
 [tool.setuptools]
 packages = ["citescope"]

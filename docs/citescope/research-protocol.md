@@ -78,3 +78,23 @@ Never include private CRM records, API credentials or personal messages without
 proper rights and consent. Respect website and dataset licenses. Quotes from
 third-party sources should be limited to properly licensed or permitted uses.
 Avoid creating fake reviews, fabricated statistics, or artificial citations.
+
+## Controlled GEO optimization experiments
+
+A CiteScope GEO experiment changes only the **target source** while keeping the
+other cited candidate sources fixed. Test both variants using the same model,
+same instructions, identical query and comparable sampling conditions, and
+collect multiple independent runs. CiteScope validates that non-target source
+snapshots do not change between variants.
+
+Primary visibility proxy: target-source citation mentions divided by total
+numbered citation mentions in the generated response; a run with no citations
+gets zero target share. Values are averaged per question before comparison.
+Bootstrap resampling is paired by question. This cannot measure source
+retrieval probability or actual visibility in ChatGPT/Gemini/Perplexity search,
+and cannot establish whether content rewriting *caused* performance changes
+outside the controlled experiment.
+
+The optional collector uses a bounded number of API requests and defaults to
+a no-network dry-run. Provider charges can apply with `--execute`. Test one
+question first, save model version and dated output, then scale a study.
