@@ -71,3 +71,13 @@ jobs:
         with:
           name: citescope-synthetic-demo
           path: out/
+      - name: Upload ready-to-host static browser workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: citescope-static-browser-workspace
+          path: |
+            web/index.html
+            web/style.css
+            web/app.mjs
+            web/audit-core.mjs
+            hf-space/README.md

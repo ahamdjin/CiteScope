@@ -26,3 +26,5 @@ https://github.com/GEO-optim/GEO
 
 The application does not automatically establish truth or claim entailment.
 All reviewer verdicts are human labels, not machine-generated conclusions.
+
+Created and maintained by [Ahmad Yar](https://www.ahmadyar.co), with the original GEO research authors credited separately.
