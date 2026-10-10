@@ -58,11 +58,13 @@ jobs:
           citescope-report out/synthetic-scores.json --output out/synthetic-report.html
           citescope-geo examples/geo-experiment-synthetic.json --control control --candidate evidence-first --output out/synthetic-geo.json
           citescope-collect examples/geo-experiment-plan.json --model demo-only --output out/dry-run.json --max-calls 12
+          citescope-nli examples/benchmark-synthetic.json --output out/nli-plan.json
           python -m json.tool out/citation-audit.json > /dev/null
           python -m json.tool out/unreviewed-draft.json > /dev/null
           python -m json.tool out/synthetic-scores.json > /dev/null
           python -m json.tool out/synthetic-geo.json > /dev/null
           python -m json.tool out/dry-run.json > /dev/null
+          python -m json.tool out/nli-plan.json > /dev/null
           grep -q '"dry_run": true' out/dry-run.json
           test -s out/synthetic-report.html
           grep -q 'Demonstration data only' out/synthetic-report.html

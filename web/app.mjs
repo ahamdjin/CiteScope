@@ -1,9 +1,9 @@
 import {
-  auditAnswer, makeBenchmark, markdownReport, validateReview, reviewSummary
+  auditAnswer, makeBenchmark, markdownReport, validateReview, reviewSummary, normalize
 } from "./audit-core.mjs";
 
 const byId = id => document.getElementById(id);
-const state = {audit:null, details:null, reviews:{}, reviewUnits:[], nextUnitId:0, snapshot:null};
+const state = {audit:null, details:null, reviews:{}, reviewUnits:[], nextUnitId:0, nli:{}, snapshot:null};
 
 function el(tag, className = "", text = "") {
   const node = document.createElement(tag);
@@ -152,6 +152,19 @@ function renderClaims() {
           "Quoted passage: " + quote.status.replaceAll("_"," ") + " — “" + quote.quote + "”"));
       }
     }
+    const suggestion = state.nli[unit.id];
+    if (suggestion?.top_candidate) {
+      const box = el("div", "nli-card");
+      box.append(el("div", "nli-title", "MODEL SUGGESTION — NOT FACT VERIFICATION"));
+      const best = suggestion.top_candidate;
+      const label = suggestion.model_preference || "uncertain";
+      const scores = best.nli_scores || {};
+      const score = typeof scores[label] === "number" ? " · " + (scores[label] * 100).toFixed(1) + "% model score" : "";
+      box.append(el("p", "nli-label", "Source [" + best.source_id + "] · " + label + score));
+      box.append(el("blockquote", "nli-quote", best.text));
+      box.append(el("p", "nli-caution", "NLI is a directional signal. Read the complete source and decide the actual verdict yourself."));
+      block.append(box);
+    }
     const row = el("div", "review-grid");
     const previous = existing[unit.id] || {};
     const claimEdit = makeField("Atomic claim (edit or split composite statements)", "claim-edit",
@@ -223,6 +236,7 @@ function analyze() {
     state.details = details;
     state.snapshot = inputSignature();
     state.reviews = {};
+    state.nli = {};
     renderClaims();
     renderAlerts();
     renderStats();
@@ -272,7 +286,7 @@ function loadExample() {
     text:"Zapier supports multi-step workflows with multiple actions. Filters and branching Paths can control which actions run."});
   addSource({id:2,url:"https://example.org/n8n-reference",
     text:"n8n workflows can communicate with external APIs using HTTP Request nodes and API credentials."});
-  state.audit = null; state.reviewUnits = []; state.reviews = {}; state.snapshot = null;
+  state.audit = null; state.reviewUnits = []; state.reviews = {}; state.nli = {}; state.snapshot = null;
   byId("results").classList.add("hidden");
   ["stat-claims","stat-unknown","stat-resolved","stat-reviewed"].forEach(id => stat(id,"—"));
   feedback("Illustrative example loaded. These are synthetic source excerpts, not independently collected research.");
@@ -339,6 +353,7 @@ byId("import-file").addEventListener("change", async event => {
     state.details = readDetails();
     state.reviewUnits = reviewUnits;
     state.reviews = prior;
+    state.nli = {};
     state.nextUnitId = Math.max(0,audit.units.length,...reviewUnits.map(unit => /^c\d+$/.test(unit.id) ? Number(unit.id.slice(1)) : 0));
     state.snapshot = inputSignature();
     renderClaims();
@@ -348,4 +363,50 @@ byId("import-file").addEventListener("change", async event => {
     feedback("Review imported. Labels were supplied in the file; CiteScope has not independently validated them.");
     byId("results").scrollIntoView({behavior:"smooth",block:"start"});
   } catch(error) {feedback("Import failed: " + error.message,true);}
+});
+
+
+// Import model-generated suggestions without ever changing human verdicts.
+byId("nli-import-btn").addEventListener("click", () => byId("nli-import-file").click());
+byId("nli-import-file").addEventListener("change", async event => {
+  const file = event.target.files?.[0];
+  event.target.value = "";
+  if (!file) return;
+  try {
+    if (!state.audit) throw new Error("Inspect or import a CiteScope review first.");
+    if (state.snapshot !== inputSignature()) throw new Error("Your answer or sources changed; inspect again first.");
+    if (file.size > 3_000_000) throw new Error("Choose a suggestion file under 3 MB.");
+    const payload = JSON.parse(await file.text());
+    if (payload.schema !== "citescope-local-nli-suggestions-v1" ||
+        payload.executed !== true || !Array.isArray(payload.suggestions)) {
+      throw new Error("This is not an executed CiteScope NLI suggestions report.");
+    }
+    const details = readDetails();
+    const sourceById = new Map(state.audit.sources.map(src => [String(src.id),src]));
+    let accepted = 0;
+    state.nli = {};
+    for (const row of payload.suggestions) {
+      if (String(row.case_id) !== details.caseId ||
+          String(row.model_output_name) !== details.model ||
+          String(row.run_id) !== details.runId) continue;
+      const unit = state.reviewUnits.find(x => x.id === String(row.claim_id));
+      const text = unit && (state.reviews[unit.id]?.claimText || unit.claim || unit.text);
+      if (!unit || normalize(text) !== normalize(row.claim_text)) continue;
+      const candidate = row.top_candidate;
+      if (!candidate || !sourceById.has(String(candidate.source_id))) continue;
+      const source = sourceById.get(String(candidate.source_id));
+      if (!unit.citations.includes(String(candidate.source_id)) ||
+          !normalize(source.text).includes(normalize(candidate.text || ""))) continue;
+      state.nli[unit.id] = {
+        model_id:payload.model_id,
+        model_preference:row.model_preference,
+        top_candidate:candidate
+      };
+      accepted += 1;
+    }
+    if (!accepted) throw new Error("No suggestions matched this review's claims and source snapshots.");
+    renderClaims();
+    renderStats();
+    feedback(accepted + " local NLI suggestion(s) added. Human labels were not changed.");
+  } catch(error) {feedback("NLI import failed: " + error.message,true);}
 });

@@ -150,3 +150,10 @@ footer a{color:#4264a0}
 .review-grid .field:has(.claim-edit){grid-column:1/-1}
 .atomic-edit{min-height:60px}
 @media(max-width:700px){.top-actions{width:100%}.top-actions>.ghost-button{flex:1}}
+
+.result-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.nli-card{margin:15px 0 19px;padding:15px;border:1px solid #bfd0ee;background:#f3f7ff;border-radius:8px}
+.nli-title{font-size:10px;letter-spacing:.095em;font-weight:820;color:#3563a5}
+.nli-label{font-size:13px;font-weight:750;color:#204a89;margin:9px 0 5px}
+.nli-quote{margin:8px 0;font-size:13px;color:#354b6a;border-left:2px solid #83a2d5;padding-left:12px}
+.nli-caution{font-size:11px;color:#687f9e;margin:8px 0 0}

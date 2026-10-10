@@ -69,3 +69,15 @@ contain \`sdk: static\` and \`app_file: index.html\`.
 
 Copyright of original GEO sources remains with the original GEO authors.
 CiteScope extensions are credited separately.
+
+## Optional Hugging Face NLI suggestions
+
+To review model-assisted evidence without automatically replacing human labels:
+
+1. Export the benchmark JSON from the browser.
+2. Install local model dependencies with `python -m pip install -e '.[nli]'`.
+3. Run `python -m citescope.nli citescope-case-001.json --execute --output suggestions.json`.
+4. Return to the review app and use **Import NLI suggestions**.
+5. Read the cited source in context and choose the final human verdict yourself.
+
+The model must explicitly be executed on your own machine; dry-run plans do not include predictions. Its probability scores do not measure factual accuracy.

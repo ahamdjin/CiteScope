@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "citescope-research"
-version = "0.3.0"
+version = "0.4.0"
 description = "Evidence-first, reproducible citation auditing and model benchmarking"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -19,6 +19,9 @@ classifiers = [
 ]
 dependencies = []
 
+[project.optional-dependencies]
+nli = ["torch>=2.3,<3", "transformers>=4.45,<6", "sentencepiece>=0.2", "protobuf>=4.25"]
+
 [project.urls]
 Repository = "https://github.com/ahamdjin/CiteScope"
 Upstream = "https://github.com/GEO-optim/GEO"
@@ -28,6 +31,7 @@ citescope-audit = "citescope.audit:main"
 citescope-ingest = "citescope.ingest:main"
 citescope-benchmark = "citescope.benchmark:main"
 citescope-report = "citescope.report:main"
+citescope-nli = "citescope.nli:main"
 citescope-geo = "citescope.geo_experiment:main"
 citescope-collect = "citescope.collect:main"
 
