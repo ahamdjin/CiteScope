@@ -1,6 +1,16 @@
 name: Publish CiteScope to Hugging Face
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'web/index.html'
+      - 'web/style.css'
+      - 'web/app.mjs'
+      - 'web/audit-core.mjs'
+      - 'hf-space/README.md'
+      - '.github/workflows/publish-hf-space.yml'
 permissions:
   contents: read
 jobs:

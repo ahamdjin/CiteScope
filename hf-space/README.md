@@ -11,6 +11,8 @@ license: apache-2.0
 
 # CiteScope Evidence Review
 
+**Created and maintained by [Ahmad Yar](https://www.ahmadyar.co).**
+
 A browser-only, privacy-first citation integrity and human evidence review tool.
 
 **This Space runs entirely in your browser.** Paste AI answer text and source
@@ -27,4 +29,4 @@ https://github.com/GEO-optim/GEO
 The application does not automatically establish truth or claim entailment.
 All reviewer verdicts are human labels, not machine-generated conclusions.
 
-Created and maintained by [Ahmad Yar](https://www.ahmadyar.co), with the original GEO research authors credited separately.
+Original GEO research attribution and its Apache-2.0 license are retained.

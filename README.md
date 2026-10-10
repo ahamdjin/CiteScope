@@ -1,5 +1,7 @@
 # CiteScope
 
+Open-source AI citation research and evidence review by [Ahmad Yar](https://www.ahmadyar.co), building on the original [GEO research](https://github.com/GEO-optim/GEO).
+
 **Reproducible evidence intelligence for AI-generated answers.**
 
 CiteScope is an open-source Python toolkit for auditing numbered AI citations,
