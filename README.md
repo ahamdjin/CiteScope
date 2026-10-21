@@ -20,7 +20,7 @@ inspectable and honest about uncertainty—not to promise better rankings.
 
 The [browser-based review tool](web/) lets anyone inspect numbered citations, paste source snapshots, edit or split atomic claims, add human evidence verdicts, and export or resume a benchmark review. It requires no server-side model, account or API key.
 
-Start locally with `cd web && python -m http.server 8000`, then visit `http://localhost:8000`. A free Hugging Face Static Space can host the same files after deployment.
+Start locally with `cd web && python -m http.server 8000`, then visit `http://localhost:8000`. The [public Hugging Face Space](https://huggingface.co/spaces/ahmadyaar/citescope-evidence-review) provides the hosted demo; you can also host the same static files yourself.
 
 ## Optional local AI evidence assistant
 
@@ -59,7 +59,7 @@ the scores as meaningful research findings.
 | Offline HTML reports | Responsive, inspectable output with source-level evidence | Tested; no trackers or paid API |
 | Modern model collection | Optional OpenAI-compatible Responses/Chat APIs, source-controlled GEO experiments | Implemented; live provider not yet tested |
 | Independently reviewed research benchmark | Gold labels and published results | Planned |
-| Hugging Face Space | Published demo and dataset | Planned; static demo export is ready |
+| Hugging Face Space | [Browser evidence-review demo](https://huggingface.co/spaces/ahmadyaar/citescope-evidence-review) | Published demo link; independently reviewed benchmark and dataset publication are separate, ongoing work |
 
 ## Quick start — no API keys
 
